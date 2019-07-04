@@ -56,6 +56,24 @@ public class Purchase {
 	public void setPurchaseDate(String purchaseDate) {
 		this.purchaseDate = purchaseDate;
 	}
+	public String getItemCode() {
+		return itemCode;
+	}
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+	public String getItemDescription() {
+		return itemDescription;
+	}
+	public void setItemDescription(String itemDescription) {
+		this.itemDescription = itemDescription;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
 	
 	
 

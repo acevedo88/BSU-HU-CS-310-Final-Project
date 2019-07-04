@@ -143,7 +143,6 @@ public class FinalProject {
 			int itemID = resultSet.getInt(5);
 			int quantity = resultSet.getInt(6);
 			String purchaseDate = resultSet.getString(7);
-/// TODO purchase code doesn't select correct format must adjust purchase code
 			Purchase purchase = new Purchase(itemCodes, itemDescription, price, itemID, quantity, purchaseDate);
 			purchases.add(purchase);
 		}
@@ -159,15 +158,15 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT * FROM Item Join (SELECT * FROM Shipment) AS tbl_s ON Item.ID = tbl_s.ItemID WHERE ItemCode = '%s';",itemCode);
+		String sql = String.format("SELECT * FROM Item Join (SELECT ItemID, Quantity, ShipmentDate FROM Shipment) AS tbl_s ON Item.ID = tbl_s.ItemID WHERE ItemCode = '%s';",itemCode);
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Shipment> shipments = new ArrayList<Shipment>();
 
 		while (resultSet.next()) {
-			int itemID = resultSet.getInt(2);
-			int quantity = resultSet.getInt(3);
-			String shipmentDate = resultSet.getString(4);
+			int itemID = resultSet.getInt(5);
+			int quantity = resultSet.getInt(6);
+			String shipmentDate = resultSet.getString(7);
 
 			Shipment shipment = new Shipment(itemID, quantity, shipmentDate);
 			shipments.add(shipment);
