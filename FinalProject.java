@@ -130,9 +130,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT * FROM Item Join \n" + 
-				"(SELECT * FROM Purchase) \n" + 
-				"AS tbl_p ON Item.ID = tbl_p.ItemID WHERE ItemCode = '%s';",itemCode);
+		String sql = String.format("SELECT * FROM Item Join (SELECT * FROM Purchase) AS tbl_p ON Item.ID = tbl_p.ItemID WHERE ItemCode = '%s';",itemCode);
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Purchase> purchases = new ArrayList<Purchase>();
@@ -157,9 +155,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT * FROM Item Join \n" + 
-				"(SELECT * FROM Shipment) \n" + 
-				"AS tbl_s ON Item.ID = tbl_s.ItemID WHERE ItemCode = '%s';",itemCode);
+		String sql = String.format("SELECT * FROM Item Join (SELECT * FROM Shipment) AS tbl_s ON Item.ID = tbl_s.ItemID WHERE ItemCode = '%s';",itemCode);
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Shipment> shipments = new ArrayList<Shipment>();
@@ -295,9 +291,7 @@ public class FinalProject {
 		Statement sqlStatement = connection.createStatement();
 
 
-		String sql = String.format("SET @Ptop = (SELECT p.ID  FROM Purchase AS p LEFT JOIN Item as i ON p.ItemID = i.ID \n" + 
-				"WHERE i.ItemCode = '%s' ORDER BY PurchaseDate DESC Limit 1);\n" + 
-				"DELETE FROM Purchase WHERE ID = @Ptop;", itemCode);
+		String sql = String.format("SET @Ptop = (SELECT p.ID  FROM Purchase AS p LEFT JOIN Item as i ON p.ItemID = i.ID WHERE i.ItemCode = '%s' ORDER BY PurchaseDate DESC Limit 1);DELETE FROM Purchase WHERE ID = @Ptop;", itemCode);
 		sqlStatement.executeUpdate(sql);
 		connection.close();
 	}
@@ -309,9 +303,7 @@ public class FinalProject {
 		Statement sqlStatement = connection.createStatement();
 
 
-		String sql = String.format("Set @SHtop = (SELECT s.ID FROM Shipment as s LEFT JOIN Item as i on s.ItemID = i.ID\n" + 
-				"WHERE i.ItemCode = '%s' ORDER BY ShipmentDate DESC LIMIT 1);\n" + 
-				"Delete FROM Shipment WHERE ID = @SHtop;", itemCode);
+		String sql = String.format("Set @SHtop = (SELECT s.ID FROM Shipment as s LEFT JOIN Item as i on s.ItemID = i.ID WHERE i.ItemCode = '%s' ORDER BY ShipmentDate DESC LIMIT 1); Delete FROM Shipment WHERE ID = @SHtop;", itemCode);
 		sqlStatement.executeUpdate(sql);
 		connection.close();
 	}
@@ -489,7 +481,7 @@ public class FinalProject {
 			}
 
 		}
-		else if(args[0].equals("GetPurchase")) {
+		else if(args[0].equals("GetPurchases")) {
 			String itemCode = args[1];
 			if(itemCode == "%"){
 				attemptToGetAllPurchases();
