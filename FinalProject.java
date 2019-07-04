@@ -394,7 +394,6 @@ public class FinalProject {
 			System.out.println(sqlException.getMessage());
 		}
 	}
-	
 	public static void attemptToGetAllShipments() {
 		try {
 			List<Shipment> shipments = getAllShipments();
@@ -421,7 +420,34 @@ public class FinalProject {
         try {
             updateItem(itemCode, price);
         } catch (SQLException sqlException) {
-            System.out.println("Failed to update Price");
+            System.out.println("Failed to update Item");
+            System.out.println(sqlException.getMessage());
+        }
+
+    }
+	public static void attemptToDeleteItem(String itemCode) {
+        try {
+            deleteItem(itemCode);
+        } catch (SQLException sqlException) {
+            System.out.println("Failed to Delete Item");
+            System.out.println(sqlException.getMessage());
+        }
+
+    }
+	public static void attemptToDeletePurchase(String itemCode) {
+        try {
+            deletePurchase(itemCode);
+        } catch (SQLException sqlException) {
+            System.out.println("Failed to Delete Purchase");
+            System.out.println(sqlException.getMessage());
+        }
+
+    }
+	public static void attemptToDeleteShipment(String itemCode) {
+        try {
+            deleteShipment(itemCode);
+        } catch (SQLException sqlException) {
+            System.out.println("Failed to Delete Shipment");
             System.out.println(sqlException.getMessage());
         }
 
@@ -485,6 +511,27 @@ public class FinalProject {
 			String itemCode = args[2];
             double price = Double.parseDouble(args[3]);
             attemptToUpdateItem(itemCode, price);
+		}
+		else if(args[0].equals("DeleteItem")) {
+			String itemCode = args[2];
+            attemptToDeleteItem(itemCode);
+		}
+		else if(args[0].equals("DeletePurchase")) {
+			String itemCode = args[2];
+            attemptToDeletePurchase(itemCode);
+		}
+		else if(args[0].equals("DeleteShipment")) {
+			String itemCode = args[2];
+            attemptToDeleteShipment(itemCode);
+		}
+		
+		else {
+			System.out.println("Sorry that is an incorrect format.  Please use one of the following commands for your input: ");
+			System.out.println("CreateItem <itemCode> <itemDescription> <price>"+"\n"+"CreatePurchase <itemCode> <PurchaseQuantity>"
+					+"\n"+"CreateShipment <itemCode> <ShipmentQuantity> <shipmentDate>" +"\n"+"GetItems <itemCode>"
+					+"\n"+"GetShipments <itemCode>" +"\n"+"GetPurchases <itemCode>" +"\n"+"ItemsAvailable <itemCode>" 
+					+"\n"+"UpdateItem <itemCode> <price>"+"\n"+"DeleteItem <itemCode>" +"\n"+"DeleteShipment <itemCode>"
+					+"\n"+"DeletePurchase <itemCode>");
 		}
 
 
