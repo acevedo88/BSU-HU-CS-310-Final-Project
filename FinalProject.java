@@ -193,12 +193,11 @@ public class FinalProject {
 		List<Item> items = new ArrayList<Item>();
 
 		while (resultSet.next()) {
-			int id = resultSet.getInt(1);
 			String itemCode = resultSet.getString(2);
 			String itemDescription = resultSet.getString(3);
 			double price = resultSet.getDouble(4);
 
-			Item item = new Item(id, itemCode, itemDescription, price);
+			Item item = new Item(itemCode, itemDescription, price);
 			items.add(item);
 		}
 		resultSet.close();

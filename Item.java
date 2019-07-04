@@ -29,8 +29,23 @@ public class Item {
     }
 
 
-
     public String toString(){
         return String.format("(%s, %s, %s)", itemCode, itemDescription, price);
     }
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+	public void setItemDescription(String itemDescription) {
+		this.itemDescription = itemDescription;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+    
 }
