@@ -131,17 +131,20 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT * FROM Item Join (SELECT * FROM Purchase) AS tbl_p ON Item.ID = tbl_p.ItemID WHERE ItemCode = '%s';",itemCode);
+		String sql = String.format("SELECT * FROM Item Join (SELECT ItemID, Quantity, PurchaseDate FROM Purchase) AS tbl_p ON Item.ID = tbl_p.ItemID WHERE ItemCode = '%s;",itemCode);
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Purchase> purchases = new ArrayList<Purchase>();
 
 		while (resultSet.next()) {
-			int itemID = resultSet.getInt(2);
-			int quantity = resultSet.getInt(3);
-			String purchaseDate = resultSet.getString(4);
-
-			Purchase purchase = new Purchase(itemID, quantity, purchaseDate);
+			String itemCodes = resultSet.getString(2);
+			String itemDescription = resultSet.getString(3);
+			double price = resultSet.getDouble(4);
+			int itemID = resultSet.getInt(5);
+			int quantity = resultSet.getInt(6);
+			String purchaseDate = resultSet.getString(7);
+/// TODO purchase code doesn't select correct format must adjust purchase code
+			Purchase purchase = new Purchase(itemCodes, itemDescription, price, itemID, quantity, purchaseDate);
 			purchases.add(purchase);
 		}
 		resultSet.close();

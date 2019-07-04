@@ -2,7 +2,20 @@ public class Purchase {
 	private int itemId;
 	private int quantity;
 	private String purchaseDate;
+	private String itemCode;
+	private String itemDescription;
+	private double price;
 	
+	
+	public Purchase(String itemCode, String itemDescription, double price, int itemID, int quantity, String purchaseDate) {
+		this.itemCode = itemCode;
+		this.itemDescription = itemDescription;
+		this.price = price;
+        this.itemId = itemID;
+        this.quantity = quantity;
+        this.purchaseDate = purchaseDate;
+        
+    }
 	public Purchase(int itemID, int quantity, String purchaseDate) {
         this.itemId = itemID;
         this.quantity = quantity;
