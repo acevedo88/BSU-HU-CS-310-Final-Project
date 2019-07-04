@@ -24,6 +24,6 @@ public class Item {
 
 
     public String toString(){
-        return String.format("(%s, %s, %s, %s)", itemCode, itemDescription, price);
+        return String.format("(%s, %s, %s)", itemCode, itemDescription, price);
     }
 }
