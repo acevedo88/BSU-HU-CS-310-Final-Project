@@ -2,7 +2,14 @@ public class Item {
     private String itemCode;
     private String itemDescription;
     private double price;
+	private int id;
 
+    public Item(int id, String itemCode, String itemDescription, double price) {
+    	this.id = id;
+        this.itemCode = itemCode;
+        this.itemDescription = itemDescription;
+        this.price = price;
+    }
     public Item(String itemCode, String itemDescription, double price) {
         this.itemCode = itemCode;
         this.itemDescription = itemDescription;

@@ -31,7 +31,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("INSERT INTO Purchase (ItemID, Quantity, PurchaseDate) VALUES ('%s' , '%s' , '%s');",
+		String sql = String.format("INSERT INTO Purchase (ItemID, Quantity) VALUES ('%s' , '%s');",
 				itemID, quantity);
 
 		sqlStatement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
@@ -111,11 +111,12 @@ public class FinalProject {
 		List<Item> items = new ArrayList<Item>();
 
 		while (resultSet.next()) {
+			int id = resultSet.getInt(1);
 			String itemCodes = resultSet.getString(2);
 			String itemDescription = resultSet.getString(3);
 			double price = resultSet.getDouble(4);
 
-			Item item = new Item(itemCodes, itemDescription, price);
+			Item item = new Item(id, itemCodes, itemDescription, price);
 			items.add(item);
 		}
 		resultSet.close();
@@ -190,11 +191,12 @@ public class FinalProject {
 		List<Item> items = new ArrayList<Item>();
 
 		while (resultSet.next()) {
+			int id = resultSet.getInt(1);
 			String itemCode = resultSet.getString(2);
 			String itemDescription = resultSet.getString(3);
 			double price = resultSet.getDouble(4);
 
-			Item item = new Item(itemCode, itemDescription, price);
+			Item item = new Item(id, itemCode, itemDescription, price);
 			items.add(item);
 		}
 		resultSet.close();
