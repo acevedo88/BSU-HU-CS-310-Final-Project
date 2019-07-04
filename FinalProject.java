@@ -187,17 +187,18 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = "SELECT * FROM Item;";
+		String sql = String.format("SELECT * From Item;");
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Item> items = new ArrayList<Item>();
 
 		while (resultSet.next()) {
-			String itemCode = resultSet.getString(2);
+			int id = resultSet.getInt(1);
+			String itemCodes = resultSet.getString(2);
 			String itemDescription = resultSet.getString(3);
 			double price = resultSet.getDouble(4);
 
-			Item item = new Item(itemCode, itemDescription, price);
+			Item item = new Item(id, itemCodes, itemDescription, price);
 			items.add(item);
 		}
 		resultSet.close();
