@@ -31,6 +31,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
+		///TODO Must create through ItemCode
 		String sql = String.format("INSERT INTO Purchase (ItemID, Quantity) VALUES ('%s' , '%s');",
 				itemID, quantity);
 
@@ -53,6 +54,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
+		///TODO Must create through ItemCode
 		String sql = String.format("INSERT INTO Shipment (ItemID, Quantity, ShipmentDate) VALUES ('%s', '%s' , '%s' );",
 				itemID, quantity, shipmentDate);
 
@@ -180,14 +182,14 @@ public class FinalProject {
 
 	//Get all methods
 
-	public static List<Item> getAllItems() throws SQLException {
+	public static List<Item> getAllItems(String itemCode) throws SQLException {
 		Connection connection = null;
 
 
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT * From Item;");
+		String sql = String.format("SELECT '%s' From Item;",itemCode);
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Item> items = new ArrayList<Item>();
@@ -346,9 +348,9 @@ public class FinalProject {
 		}
 
 	}
-	public static void attemptToGetAllItems() {
+	public static void attemptToGetAllItems(String itemCode) {
 		try {
-			List<Item> items = getAllItems();
+			List<Item> items = getAllItems(itemCode);
 			for (Item item : items) {
 				System.out.println(item.toString());
 			}
@@ -478,7 +480,8 @@ public class FinalProject {
 		else if(args[0].equals("GetItems")){
 			String itemCode = args[1];
 			if(itemCode == "%") {
-				attemptToGetAllItems();
+				itemCode = "*";
+				attemptToGetAllItems(itemCode);
 			}
 			else {
 				attemptToGetItem(args[1]);
@@ -488,6 +491,7 @@ public class FinalProject {
 		else if(args[0].equals("GetPurchases")) {
 			String itemCode = args[1];
 			if(itemCode == "%"){
+				itemCode = "*";
 				attemptToGetAllPurchases();
 			}
 			else {
