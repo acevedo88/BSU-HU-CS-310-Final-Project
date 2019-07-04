@@ -297,7 +297,9 @@ public class FinalProject {
 		Statement sqlStatement = connection.createStatement();
 
 
-		String sql = String.format("SET @Ptop = (SELECT p.ID  FROM Purchase AS p LEFT JOIN Item as i ON p.ItemID = i.ID WHERE i.ItemCode = '%s' ORDER BY PurchaseDate DESC Limit 1);DELETE FROM Purchase WHERE ID = @Ptop;", itemCode);
+		String sql = String.format("SET @Ptop = (SELECT p.ID  FROM Purchase AS p LEFT JOIN Item as i ON p.ItemID = i.ID \n" + 
+				"WHERE i.ItemCode = %s' ORDER BY PurchaseDate DESC Limit 1);\n" + 
+				"DELETE FROM Purchase WHERE ID = @Ptop;", itemCode);
 		sqlStatement.executeUpdate(sql);
 		connection.close();
 	}
@@ -309,7 +311,9 @@ public class FinalProject {
 		Statement sqlStatement = connection.createStatement();
 
 
-		String sql = String.format("Set @SHtop = (SELECT s.ID FROM Shipment as s LEFT JOIN Item as i on s.ItemID = i.ID WHERE i.ItemCode = '%s' ORDER BY ShipmentDate DESC LIMIT 1); Delete FROM Shipment WHERE ID = @SHtop;", itemCode);
+		String sql = String.format("Set @SHtop = (SELECT s.ID FROM Shipment as s LEFT JOIN Item as i on s.ItemID = i.ID\n" + 
+				"WHERE i.ItemCode = '%s' ORDER BY ShipmentDate DESC LIMIT 1);\n" + 
+				"Delete FROM Shipment WHERE ID = @SHtop;", itemCode);
 		sqlStatement.executeUpdate(sql);
 		connection.close();
 	}
