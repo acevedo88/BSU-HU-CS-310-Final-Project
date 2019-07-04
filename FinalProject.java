@@ -131,7 +131,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT * FROM Item Join (SELECT ItemID, Quantity, PurchaseDate FROM Purchase) AS tbl_p ON Item.ID = tbl_p.ItemID WHERE ItemCode = '%s;",itemCode);
+		String sql = String.format("SELECT * FROM Item Join (SELECT ItemID, Quantity, PurchaseDate FROM Purchase) AS tbl_p ON Item.ID = tbl_p.ItemID WHERE ItemCode = '%s';",itemCode);
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Purchase> purchases = new ArrayList<Purchase>();
