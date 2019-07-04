@@ -182,14 +182,14 @@ public class FinalProject {
 
 	//Get all methods
 
-	public static List<Item> getAllItems(String itemCode) throws SQLException {
+	public static List<Item> getAllItems() throws SQLException {
 		Connection connection = null;
 
 
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT '%s' From Item;",itemCode);
+		String sql = String.format("SELECT * From Item;");
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Item> items = new ArrayList<Item>();
@@ -348,9 +348,9 @@ public class FinalProject {
 		}
 
 	}
-	public static void attemptToGetAllItems(String itemCode) {
+	public static void attemptToGetAllItems() {
 		try {
-			List<Item> items = getAllItems(itemCode);
+			List<Item> items = getAllItems();
 			for (Item item : items) {
 				System.out.println(item.toString());
 			}
@@ -480,8 +480,7 @@ public class FinalProject {
 		else if(args[0].equals("GetItems")){
 			String itemCode = args[1];
 			if(itemCode == "%") {
-				itemCode = "*";
-				attemptToGetAllItems(itemCode);
+				attemptToGetAllItems();
 			}
 			else {
 				attemptToGetItem(args[1]);
@@ -491,7 +490,6 @@ public class FinalProject {
 		else if(args[0].equals("GetPurchases")) {
 			String itemCode = args[1];
 			if(itemCode == "%"){
-				itemCode = "*";
 				attemptToGetAllPurchases();
 			}
 			else {
@@ -508,20 +506,20 @@ public class FinalProject {
 			}
 		}
 		else if(args[0].equals("UpdateItem")) {
-			String itemCode = args[2];
-            double price = Double.parseDouble(args[3]);
+			String itemCode = args[1];
+            double price = Double.parseDouble(args[2]);
             attemptToUpdateItem(itemCode, price);
 		}
 		else if(args[0].equals("DeleteItem")) {
-			String itemCode = args[2];
+			String itemCode = args[1];
             attemptToDeleteItem(itemCode);
 		}
 		else if(args[0].equals("DeletePurchase")) {
-			String itemCode = args[2];
+			String itemCode = args[1];
             attemptToDeletePurchase(itemCode);
 		}
 		else if(args[0].equals("DeleteShipment")) {
-			String itemCode = args[2];
+			String itemCode = args[1];
             attemptToDeleteShipment(itemCode);
 		}
 		
