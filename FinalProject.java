@@ -274,6 +274,36 @@ public class FinalProject {
 		connection.close();
 	}
 
+	//Items Available method
+	public static void availableItems(String itemCode) throws SQLException {
+		Connection connection = null;
+		
+			connection = MySqlDatabase.getDatabaseConnection();
+			String sql = String.format("CALL ItemsAvailable('%s')", itemCode);
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery(sql);
+			int rows = 0;
+			
+			String itemhead = String.format("%-15s %-35s %-12s", "Item Code","Description","Quantity");
+			System.out.println("_________________________________________________________");
+			
+			while(resultSet.next()) {
+				rows++;
+				String itemCodes = resultSet.getString(1);
+				String itemDescriptions = resultSet.getString(2);
+				int quantities = resultSet.getInt(3);
+				String output = String.format("%-15s %-35s %-12s", itemCodes, itemDescriptions, quantities);
+				System.out.println(output);
+			}
+			
+			System.out.println("\n\nThe Items Amounts: "+rows);
+			connection.close();
+			
+			
+
+	}
+	
+	
 	//Delete methods
 
 	public static void deleteItem(String itemCode) throws SQLException {
@@ -316,7 +346,7 @@ public class FinalProject {
 		
 		connection.close();
 	}
-//TODO SQL CODE doesnt work
+
 	public static void deleteShipment(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -481,8 +511,26 @@ public class FinalProject {
         }
 
     }
+	public static void attemptToGetAvailableItems(String itemCode) {
+		try {
+            availableItems(itemCode);
+        } catch (SQLException sqlException) {
+            System.out.println("Failed to get Available Items");
+            System.out.println(sqlException.getMessage());
+        }
+	}
 
 
+	//Wrong input template
+	public static void wrongFormat() {
+		
+		System.out.println("\nSorry that is an incorrect format.  Please use one of the following commands for your input: ");
+		System.out.println("CreateItem <itemCode> <itemDescription> <price>"+"\n"+"CreatePurchase <itemCode> <PurchaseQuantity>"
+				+"\n"+"CreateShipment <itemCode> <ShipmentQuantity> <shipmentDate>" +"\n"+"GetItems <itemCode>"
+				+"\n"+"GetShipments <itemCode>" +"\n"+"GetPurchases <itemCode>" +"\n"+"ItemsAvailable <itemCode>" 
+				+"\n"+"UpdateItem <itemCode> <price>"+"\n"+"DeleteItem <itemCode>" +"\n"+"DeleteShipment <itemCode>"
+				+"\n"+"DeletePurchase <itemCode>");
+	}
 
 	// Main
 
@@ -555,14 +603,13 @@ public class FinalProject {
 			String itemCode = args[1];
             attemptToDeleteShipment(itemCode);
 		}
+		else if(args[0].equals("ItemsAvailable")) {
+			String itemCode = args[1];
+			///////////////TODO////////////
+		}
 		
 		else {
-			System.out.println("Sorry that is an incorrect format.  Please use one of the following commands for your input: ");
-			System.out.println("CreateItem <itemCode> <itemDescription> <price>"+"\n"+"CreatePurchase <itemCode> <PurchaseQuantity>"
-					+"\n"+"CreateShipment <itemCode> <ShipmentQuantity> <shipmentDate>" +"\n"+"GetItems <itemCode>"
-					+"\n"+"GetShipments <itemCode>" +"\n"+"GetPurchases <itemCode>" +"\n"+"ItemsAvailable <itemCode>" 
-					+"\n"+"UpdateItem <itemCode> <price>"+"\n"+"DeleteItem <itemCode>" +"\n"+"DeleteShipment <itemCode>"
-					+"\n"+"DeletePurchase <itemCode>");
+			wrongFormat();
 		}
 
 
