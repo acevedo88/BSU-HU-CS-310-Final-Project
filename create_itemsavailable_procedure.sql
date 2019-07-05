@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ItemsAvailabe`(IN purchaseItemCode varchar(10))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ItemsAvailable`(IN purchaseItemCode varchar(10))
 BEGIN
  IF(purchaseItemCode = '%') THEN
  SELECT Item.ItemCode,

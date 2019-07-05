@@ -61,7 +61,7 @@ public class FinalProject {
 
 	//Create using the stored procedure
 
-	public static Item createItemUsingStoredProcedure(String itemCode, String itemDescription, double price, int itemId)
+	public static Item createItemUsingStoredProcedure(String itemCode, String itemDescription, double price)
 			throws SQLException {
 
 		Connection connection = null;
@@ -70,12 +70,12 @@ public class FinalProject {
 
 		connection = MySqlDatabase.getDatabaseConnection();
 		//        create procedure for here
-		String sql = "CALL create_Item(?, ?, ?)";
+		String sql = String.format("CALL CreateNewItems('%s', '%s', '%s')", itemCode, itemDescription, price);
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-		preparedStatement.setString(1, itemCode);
-		preparedStatement.setString(2, itemDescription);
-		preparedStatement.setDouble(3, price);
+		preparedStatement.setString(2, itemCode);
+		preparedStatement.setString(3, itemDescription);
+		preparedStatement.setDouble(4, price);
 
 		preparedStatement.execute();
 		connection.close();
