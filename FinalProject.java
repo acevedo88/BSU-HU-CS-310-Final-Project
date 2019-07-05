@@ -605,7 +605,7 @@ public class FinalProject {
 		}
 		else if(args[0].equals("ItemsAvailable")) {
 			String itemCode = args[1];
-			///////////////TODO////////////
+			attemptToGetAvailableItems(itemCode);
 		}
 		
 		else {
