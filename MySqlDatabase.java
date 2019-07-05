@@ -12,13 +12,6 @@ public class MySqlDatabase {
     	String databasePassword = System.getenv("MYSQL_PASSWORD");
     	String databaseName = System.getenv("MYSQL_DATABASE");
         
-//        int databasePort = 7777;
-//        String databaseHost = "localhost";
-//        String databaseUsername = "msandbox";
-//        String databasePassword = "Analiyah1016";
-//        String databaseName = "CS310_Final";
-//        
-      
 
         return getDatabaseConnection(databaseUsername, databasePassword, databaseHost, databasePort, databaseName);
     }
