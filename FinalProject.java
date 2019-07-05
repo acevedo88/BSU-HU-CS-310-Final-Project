@@ -24,50 +24,37 @@ public class FinalProject {
 		return item;
 	}
 
-	public static Purchase createPurchase(int itemID, int quantity) throws SQLException {
+	public static Purchase createPurchase(String itemCode, int quantity) throws SQLException {
+		
 		Connection connection = null;
-
+		Purchase purchase = new Purchase(itemCode, quantity);
 
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		///TODO Must create through ItemCode
-		String sql = String.format("INSERT INTO Purchase (ItemID, Quantity) VALUES ('%s' , '%s');",
-				itemID, quantity);
-
-		sqlStatement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-
-		ResultSet resultSet = sqlStatement.getGeneratedKeys();
-		resultSet.next();
-
-		int owner_id = resultSet.getInt(1);
+		String sql = String.format("INSERT INTO Purchase (ItemID, Quantity) VALUES ((SELECT Item.ID FROM Item WHERE Item.ItemCode = '%s'),'%s');",
+				itemCode, quantity);
+		sqlStatement.executeUpdate(sql);
 		connection.close();
 
-		return new Purchase(owner_id, quantity);
+		return purchase;
 
 
 	}
 
-	public static Shipment createShipment(int itemID, int quantity, String shipmentDate) throws SQLException{
+	public static Shipment createShipment(String itemCode, int shipmentQuantity, String date) throws SQLException{
 		Connection connection = null;
+		Shipment shipment = new Shipment(itemCode, shipmentQuantity, date);
 
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		///TODO Must create through ItemCode
-		String sql = String.format("INSERT INTO Shipment (ItemID, Quantity, ShipmentDate) VALUES ('%s', '%s' , '%s' );",
-				itemID, quantity, shipmentDate);
-
-		sqlStatement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-
-		ResultSet resultSet = sqlStatement.getGeneratedKeys();
-		resultSet.next();
-
-		int owner_id = resultSet.getInt(1);
+		String sql = String.format("INSERT INTO Shipment (ItemID, Quantity, ShipmentDate) VALUES ((SELECT Item.ID FROM Item WHERE Item.ItemCode = '%s'),'%s','%s');",
+				itemCode, shipmentQuantity, date);
+		sqlStatement.executeUpdate(sql);
 		connection.close();
 
-
-		return new Shipment(owner_id, quantity, shipmentDate);
+		return shipment;
 
 	}
 
@@ -113,12 +100,11 @@ public class FinalProject {
 		List<Item> items = new ArrayList<Item>();
 
 		while (resultSet.next()) {
-			int id = resultSet.getInt(1);
 			String itemCodes = resultSet.getString(2);
 			String itemDescription = resultSet.getString(3);
 			double price = resultSet.getDouble(4);
 
-			Item item = new Item(id, itemCodes, itemDescription, price);
+			Item item = new Item(itemCodes, itemDescription, price);
 			items.add(item);
 		}
 		resultSet.close();
@@ -166,11 +152,14 @@ public class FinalProject {
 		List<Shipment> shipments = new ArrayList<Shipment>();
 
 		while (resultSet.next()) {
+			String itemCodes = resultSet.getString(2);
+			String itemDescription = resultSet.getString(3);
+			double price = resultSet.getDouble(4);
 			int itemID = resultSet.getInt(5);
 			int quantity = resultSet.getInt(6);
 			String shipmentDate = resultSet.getString(7);
 
-			Shipment shipment = new Shipment(itemID, quantity, shipmentDate);
+			Shipment shipment = new Shipment(itemCodes, itemDescription, price, itemID, quantity, shipmentDate);
 			shipments.add(shipment);
 		}
 		resultSet.close();
@@ -202,6 +191,7 @@ public class FinalProject {
 
 			Item item = new Item(id, itemCodes, itemDescription, price);
 			items.add(item);
+
 		}
 		
 		resultSet.close();
@@ -224,13 +214,16 @@ public class FinalProject {
 		List<Purchase> purchases = new ArrayList<Purchase>();
 
 		while (resultSet.next()) {
-			int itemID = resultSet.getInt(2);
-			int quantity = resultSet.getInt(3);
-			String purchaseDate = resultSet.getString(4);
+			String itemCode = resultSet.getString(2);
+			String itemDescription = resultSet.getString(3);
+			double price = resultSet.getDouble(4);
+			int itemID = resultSet.getInt(5);
+			int quantity = resultSet.getInt(6);
+			String purchaseDate = resultSet.getString(7);
 
-			Purchase purchase = new Purchase(itemID, quantity, purchaseDate);
-			//purchases.add(purchase);	
-			System.out.println(purchase.toString());
+			Purchase purchase = new Purchase(itemCode, itemDescription, price, itemID, quantity, purchaseDate);
+			purchases.add(purchase);	
+
 		}
 		resultSet.close();
 		connection.close();
@@ -251,11 +244,14 @@ public class FinalProject {
 		List<Shipment> shipments = new ArrayList<Shipment>();
 
 		while (resultSet.next()) {
-			int itemID = resultSet.getInt(2);
-			int quantity = resultSet.getInt(3);
-			String shipmentDate = resultSet.getString(4);
+			String itemCode = resultSet.getString(2);
+			String itemDescription = resultSet.getString(3);
+			double price = resultSet.getDouble(4);
+			int itemID = resultSet.getInt(5);
+			int quantity = resultSet.getInt(6);
+			String shipmentDate = resultSet.getString(7);
 
-			Shipment shipment = new Shipment(itemID, quantity, shipmentDate);
+			Shipment shipment = new Shipment(itemCode, itemDescription, price, itemID, quantity, shipmentDate);
 			shipments.add(shipment);	
 		}
 		resultSet.close();
@@ -271,8 +267,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("UPDATE Item SET ItemCode = '%s', Price = '%s' WHERE ItemCode = %s;",
-				itemCode, price);
+		String sql = String.format("UPDATE Item Set Item.Price = '%s' WHERE Item.ItemCode = '%s';",price, itemCode);
 
 		sqlStatement.executeUpdate(sql);
 
@@ -287,7 +282,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("DELETE FROM Item WHERE ItemCode = %s;", itemCode);
+		String sql = String.format("DELETE FROM Item WHERE ItemCode = '%s';", itemCode);
 		sqlStatement.executeUpdate(sql);
 		connection.close();
 	}
@@ -299,24 +294,54 @@ public class FinalProject {
 		Statement sqlStatement = connection.createStatement();
 
 
-		String sql = String.format("SET @Ptop = (SELECT p.ID  FROM Purchase AS p LEFT JOIN Item as i ON p.ItemID = i.ID \n" + 
-				"WHERE i.ItemCode = %s' ORDER BY PurchaseDate DESC Limit 1);\n" + 
-				"DELETE FROM Purchase WHERE ID = @Ptop;", itemCode);
-		sqlStatement.executeUpdate(sql);
+		String sql = String.format("SELECT ID FROM Purchase WHERE ItemID = ((SELECT Item.ID FROM Item WHERE Item.ItemCode = '%s')) ORDER BY PurchaseDate DESC LIMIT 1;", itemCode);
+		ResultSet purchaseResult = sqlStatement.executeQuery(sql);
+		
+		purchaseResult.last();
+		int rows = purchaseResult.getRow();
+		purchaseResult.beforeFirst();
+		int purchaseID;
+		
+		if(rows == 0) {
+			System.out.println("No Item Codes were Found matching that result.");
+		}
+		
+		else {
+			purchaseResult.next();
+			purchaseID = purchaseResult.getInt(1);
+			sql = String.format("DELETE FROM Purchase WHERE ID = '%s';", purchaseID);
+			int deletes = sqlStatement.executeUpdate(sql);
+			System.out.println(deletes + " items were deleted.");
+		}
+		
 		connection.close();
 	}
-
+//TODO SQL CODE doesnt work
 	public static void deleteShipment(String itemCode) throws SQLException {
 		Connection connection = null;
 
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
-
-
-		String sql = String.format("Set @SHtop = (SELECT s.ID FROM Shipment as s LEFT JOIN Item as i on s.ItemID = i.ID\n" + 
-				"WHERE i.ItemCode = '%s' ORDER BY ShipmentDate DESC LIMIT 1);\n" + 
-				"Delete FROM Shipment WHERE ID = @SHtop;", itemCode);
-		sqlStatement.executeUpdate(sql);
+		
+		String sql = String.format("SELECT ID FROM Shipment WHERE ItemID = ((SELECT Item.ID FROM Item WHERE Item.ItemCode = '%s')) ORDER BY ShipmentDate DESC LIMIT 1;", itemCode);
+		ResultSet shipResult = sqlStatement.executeQuery(sql);
+		
+		shipResult.last();
+		int rows = shipResult.getRow();
+		shipResult.beforeFirst();
+		int shipID;
+		
+		if(rows == 0) {
+			System.out.println("No Item Codes were Found matching that result.");
+		}
+		
+		else {
+			shipResult.next();
+			shipID = shipResult.getInt(1);
+			sql = String.format("DELETE FROM Shipment WHERE ID = '%s';", shipID);
+			int deletes = sqlStatement.executeUpdate(sql);
+			System.out.println(deletes + " items were deleted.");
+		}
 		connection.close();
 	}
 
@@ -334,20 +359,20 @@ public class FinalProject {
 
 	}
 
-	public static void attemptToCreateNewPurchase(int itemID, int quantity) {
+	public static void attemptToCreateNewPurchase(String itemCode, int quantity) {
 		try {
-			Purchase purchase = createPurchase(itemID, quantity);
-			System.out.println(purchase.toString());
+			Purchase purchase = createPurchase(itemCode, quantity);
+			System.out.println("Purchase created for Item Code "+itemCode+" "+"for the quantity of "+quantity+".");
 		} catch (SQLException sqlException) {
 			System.out.println("Failed to create purchase");
 			System.out.println(sqlException.getMessage());
 		}
 
 	}
-	public static void attemptToCreateNewShipment(int itemID, int quantity, String shipmentDate) {
+	public static void attemptToCreateNewShipment(String itemCode, int shipmentQuantity, String shipmentDate) {
 		try {
-			Shipment shipment = createShipment(itemID, quantity, shipmentDate);
-			System.out.println(shipment.toString());
+			Shipment shipment = createShipment(itemCode, shipmentQuantity, shipmentDate);
+			System.out.println("Purchase created for Item Code "+itemCode+" "+" for the amount of "+shipmentQuantity+" on the date "+shipmentDate+".");
 		} catch (SQLException sqlException) {
 			System.out.println("Failed to create shipment");
 			System.out.println(sqlException.getMessage());
@@ -356,8 +381,8 @@ public class FinalProject {
 	}
 	public static void attemptToGetAllItems() {
 		try {
-			List<Item> items = getAllItems();
-			for (Item item : items) {
+			List<Item> Newitems = getAllItems();
+			for (Item item : Newitems) {
 				System.out.println(item.toString());
 			}
 		} catch (SQLException sqlException) {
@@ -471,31 +496,32 @@ public class FinalProject {
 			attemptToCreateNewItem(itemCode, itemDescription, price);
 		}
 		else if(args[0].equals("CreatePurchase")){
-			int itemID = Integer.parseInt(args[1]);
+			String itemCode = args[1];
 			int quantity = Integer.parseInt(args[2]);
-			attemptToCreateNewPurchase(itemID, quantity);
+			attemptToCreateNewPurchase(itemCode, quantity);
 
 		}
 		else if(args[0].equals("CreateShipment")){
-			int itemID = Integer.parseInt(args[1]);
-			int quantity = Integer.parseInt(args[2]);
+			String itemCode = args[1];
+			int shipmentQuantity = Integer.parseInt(args[2]);
 			String shipmentDate = args[3];
-			attemptToCreateNewShipment(itemID, quantity, shipmentDate);
+			attemptToCreateNewShipment(itemCode, shipmentQuantity, shipmentDate);
 
 		}
 		else if(args[0].equals("GetItems")){
 			String itemCode = args[1];
-			if(itemCode != "%") {
-				attemptToGetItem(args[1]);
+			if(itemCode.equals("%")) {
+				
+				attemptToGetAllItems();
 			}
 			else {
-				attemptToGetAllItems();
+				attemptToGetItem(args[1]);
 			}
 
 		}
 		else if(args[0].equals("GetPurchases")) {
 			String itemCode = args[1];
-			if(itemCode == "%"){
+			if(itemCode.equals("%")){
 				attemptToGetAllPurchases();
 			}
 			else {
@@ -504,7 +530,7 @@ public class FinalProject {
 		}
 		else if(args[0].equals("GetShipments")) {
 			String itemCode = args[1];
-			if(itemCode == "%"){
+			if(itemCode.equals("%")){
 				attemptToGetAllShipments();
 			}
 			else {
@@ -519,6 +545,7 @@ public class FinalProject {
 		else if(args[0].equals("DeleteItem")) {
 			String itemCode = args[1];
             attemptToDeleteItem(itemCode);
+            System.out.println("Item "+itemCode+" was deleted.");
 		}
 		else if(args[0].equals("DeletePurchase")) {
 			String itemCode = args[1];

@@ -30,7 +30,7 @@ public class Item {
 
 
     public String toString(){
-        return String.format("(%s, %s, %s, %s)",this.id, this.itemCode, this.itemDescription, this.price);
+        return String.format("(%s, %s, %s)",this.itemCode, this.itemDescription, this.price);
     }
 	public int getId() {
 		return id;

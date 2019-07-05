@@ -28,9 +28,14 @@ public class Purchase {
         this.quantity = quantity;
         
     }
+	public Purchase(String itemCode, int quantity) {
+        this.itemCode = itemCode;
+        this.quantity = quantity;
+        
+    }
 	
     public String toString(){
-        return String.format("(%s, %s, %s)", this.itemId, this.quantity, this.purchaseDate);
+        return String.format("(%s, %s, %s, %s, %s, %s)",this.itemCode, this.itemDescription, this.price, this.itemId, this.quantity, this.purchaseDate);
     }
 
 	public int getItemId() {
