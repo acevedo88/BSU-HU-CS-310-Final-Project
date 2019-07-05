@@ -204,10 +204,6 @@ public class FinalProject {
 			items.add(item);
 		}
 		
-		for(Item item: items) {
-			System.out.println(item.toString());
-		}
-		
 		resultSet.close();
 		connection.close();
 		return items;
@@ -489,11 +485,11 @@ public class FinalProject {
 		}
 		else if(args[0].equals("GetItems")){
 			String itemCode = args[1];
-			if(itemCode == "%") {
-				getAllItems();
+			if(itemCode != "%") {
+				attemptToGetItem(args[1]);
 			}
 			else {
-				attemptToGetItem(args[1]);
+				attemptToGetAllItems();
 			}
 
 		}
