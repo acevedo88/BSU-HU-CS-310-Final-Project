@@ -203,6 +203,11 @@ public class FinalProject {
 			Item item = new Item(id, itemCodes, itemDescription, price);
 			items.add(item);
 		}
+		
+		for(Item item: items) {
+			System.out.println(item.toString());
+		}
+		
 		resultSet.close();
 		connection.close();
 		return items;
