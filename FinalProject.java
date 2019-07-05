@@ -228,7 +228,8 @@ public class FinalProject {
 			String purchaseDate = resultSet.getString(4);
 
 			Purchase purchase = new Purchase(itemID, quantity, purchaseDate);
-			purchases.add(purchase);	
+			//purchases.add(purchase);	
+			System.out.println(purchase.toString());
 		}
 		resultSet.close();
 		connection.close();
