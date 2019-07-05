@@ -189,7 +189,7 @@ public class FinalProject {
 		connection = MySqlDatabase.getDatabaseConnection();
 		Statement sqlStatement = connection.createStatement();
 
-		String sql = String.format("SELECT * From Item;");
+		String sql = "SELECT * From Item;";
 		ResultSet resultSet = sqlStatement.executeQuery(sql);
 
 		List<Item> items = new ArrayList<Item>();
@@ -490,7 +490,7 @@ public class FinalProject {
 		else if(args[0].equals("GetItems")){
 			String itemCode = args[1];
 			if(itemCode == "%") {
-				attemptToGetAllItems();
+				getAllItems();
 			}
 			else {
 				attemptToGetItem(args[1]);
