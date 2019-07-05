@@ -605,7 +605,13 @@ public class FinalProject {
 		}
 		else if(args[0].equals("ItemsAvailable")) {
 			String itemCode = args[1];
-			attemptToGetAvailableItems(itemCode);
+			if(itemCode.equals("%")) {
+				
+				attemptToGetAvailableItems(itemCode);
+			}
+			else {
+				attemptToGetAvailableItems(itemCode);
+			}
 		}
 		
 		else {
