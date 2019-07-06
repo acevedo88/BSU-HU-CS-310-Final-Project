@@ -307,7 +307,7 @@ public class Project {
 			ResultSet resultSet = preparedStatement.executeQuery(sql);
 			int rows = 0;
 			
-			String itemhead = String.format("%-15s %-35s %-12s", "Item Code","Description","Quantity");
+			String itemhead = String.format("%-15s %-25s %-12s", "Item Code","Description","Quantity");
 			System.out.println("_________________________________________________________");
 			
 			while(resultSet.next()) {
