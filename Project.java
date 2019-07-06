@@ -680,6 +680,12 @@ public class Project {
 				attemptToGetAvailableItems(itemCode);
 			}
 		}
+		else if(args[0].equals("CreateItemFromProcedure")) {
+			String itemCode = args[1];
+			String itemDescription = args[2];
+			Double price = Double.parseDouble(args[3]);
+			attemptToCreateItemFromProcedure(itemCode, itemDescription,price);
+		}
 		
 		else {
 			wrongFormat();
