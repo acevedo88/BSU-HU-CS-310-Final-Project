@@ -5,7 +5,7 @@
  * July 3 2019
  * 
  * CS310 Final project that uses methods to call SQL commands that will create
- * a database along with 3 three tables that will store values inputed through
+ * a database along with three tables that will store values inputed through
  * command line.
  */
 
@@ -33,7 +33,7 @@ public class Project {
 		sqlStatement.executeUpdate(sql);
 		connection.close();
 
-		return item;
+		return item; 
 	}
 
 	//Creates  purchase
