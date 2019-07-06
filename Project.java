@@ -308,7 +308,7 @@ public class Project {
 			int rows = 0;
 			
 			String itemhead = String.format("%-15s %-25s %-12s", "Item Code","Description","Quantity");
-			System.out.println(itemhead);
+			System.out.println("\n"+itemhead);
 			System.out.println("_________________________________________________________");
 			
 			while(resultSet.next()) {
