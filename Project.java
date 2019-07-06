@@ -72,32 +72,6 @@ public class Project {
 
 	}
 
-
-	//Create itmes using the stored procedure which will call a the procedure in the sql database
-
-	public static Item createItemUsingStoredProcedure(String itemCode, String itemDescription, double price)
-			throws SQLException {
-
-		Connection connection = null;
-		Item item = new Item(itemCode, itemDescription, price);
-
-
-		connection = MySqlDatabase.getDatabaseConnection();
-
-		String sql = String.format("CALL CreateNewItems('%s', '%s', '%s')", itemCode, itemDescription, price);
-		PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-		preparedStatement.setString(2, itemCode);
-		preparedStatement.setString(3, itemDescription);
-		preparedStatement.setDouble(3, price);
-
-		preparedStatement.execute();
-		connection.close();
-
-		return item;
-	}
-
-
 	//Methods uses to get the items, purchases, and shipments based on the specified user input.
 	//Opens sql connection and inserts values into a query code line which will execute and save results.
 	
@@ -573,17 +547,6 @@ public class Project {
             System.out.println(sqlException.getMessage());
         }
 	}
-	
-	//Attempts to get Create Items based on ItemCode, Description and price using a stored procedure
-	public static void attemptToCreateItemFromProcedure(String itemCode, String itemDescription, double price) {
-		try {
-			 createItemUsingStoredProcedure(itemCode, itemDescription, price);
-		}
-		catch(SQLException sqlException) {
-			  System.out.println("Failed to get Create Items Using the Store Procedure");
-	           System.out.println(sqlException.getMessage());
-		}
-	}
 
 
 	//Wrong input template
@@ -594,7 +557,7 @@ public class Project {
 				+"\n"+"CreateShipment <itemCode> <ShipmentQuantity> <shipmentDate>" +"\n"+"GetItems <itemCode>"
 				+"\n"+"GetShipments <itemCode>" +"\n"+"GetPurchases <itemCode>" +"\n"+"ItemsAvailable <itemCode>" 
 				+"\n"+"UpdateItem <itemCode> <price>"+"\n"+"DeleteItem <itemCode>" +"\n"+"DeleteShipment <itemCode>"
-				+"\n"+"DeletePurchase <itemCode>"+"\nCreateItemFromProcedure <itemCode> <itemDescription> <price>");
+				+"\n"+"DeletePurchase <itemCode>");
 	}
 
 	
@@ -680,12 +643,7 @@ public class Project {
 				attemptToGetAvailableItems(itemCode);
 			}
 		}
-		else if(args[0].equals("CreateItemFromProcedure")) {
-			String itemCode = args[1];
-			String itemDescription = args[2];
-			Double price = Double.parseDouble(args[3]);
-			attemptToCreateItemFromProcedure(itemCode, itemDescription,price);
-		}
+
 		
 		else {
 			wrongFormat();
