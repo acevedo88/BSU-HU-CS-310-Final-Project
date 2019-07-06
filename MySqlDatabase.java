@@ -5,19 +5,19 @@ import java.sql.SQLException;
 
 public class MySqlDatabase {
     public static Connection getDatabaseConnection() throws SQLException {
-    	Connection databaseConnection = null;
-    	int databasePort = Integer.parseInt(System.getenv("MYSQL_PORT"));
-    	String databaseHost = System.getenv("MYSQL_HOST");
-    	String databaseUsername = System.getenv("MYSQL_USERNAME");
-    	String databasePassword = System.getenv("MYSQL_PASSWORD");
-    	String databaseName = System.getenv("MYSQL_DATABASE");
+        Connection databaseConnection = null;
+//        int databasePort = Integer.parseInt(System.getenv("MYSQL_PORT"));
+//        String databaseHost = System.getenv("MYSQL_HOST");
+//        String databaseUsername = System.getenv("MYSQL_USERNAME");
+//        String databasePassword = System.getenv("MYSQL_PASSWORD");
+//        String databaseName = System.getenv("MYSQL_DATABASE");
         
-//        int databasePort = 7777;
-//        String databaseHost = "localhost";
-//        String databaseUsername = "msandbox";
-//        String databasePassword = "Analiyah1016";
-//        String databaseName = "CS310_Final";
-//        
+        int databasePort = 7777;
+        String databaseHost = "localhost";
+        String databaseUsername = "msandbox";
+        String databasePassword = "Analiyah1016";
+        String databaseName = "CS310_Final";
+        
       
 
         return getDatabaseConnection(databaseUsername, databasePassword, databaseHost, databasePort, databaseName);

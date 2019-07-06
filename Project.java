@@ -1,9 +1,13 @@
+/*
+ * @author Alex Acevedo
+ * 
+ */
 
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class FinalProject {
+public class Project {
 
 	//Create methods
 
@@ -73,9 +77,9 @@ public class FinalProject {
 		String sql = String.format("CALL CreateNewItems('%s', '%s', '%s')", itemCode, itemDescription, price);
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-		preparedStatement.setString(2, itemCode);
-		preparedStatement.setString(3, itemDescription);
-		preparedStatement.setDouble(4, price);
+		preparedStatement.setString(1, itemCode);
+		preparedStatement.setString(2, itemDescription);
+		preparedStatement.setDouble(3, price);
 
 		preparedStatement.execute();
 		connection.close();
@@ -519,6 +523,15 @@ public class FinalProject {
             System.out.println(sqlException.getMessage());
         }
 	}
+	public static void attemptToCreateItemFromProcedure(String itemCode, String itemDescription, double price) {
+		try {
+			 createItemUsingStoredProcedure(itemCode, itemDescription, price);
+		}
+		catch(SQLException sqlException) {
+			  System.out.println("Failed to get Create Items Using the Store Procedure");
+	           System.out.println(sqlException.getMessage());
+		}
+	}
 
 
 	//Wrong input template
@@ -529,7 +542,7 @@ public class FinalProject {
 				+"\n"+"CreateShipment <itemCode> <ShipmentQuantity> <shipmentDate>" +"\n"+"GetItems <itemCode>"
 				+"\n"+"GetShipments <itemCode>" +"\n"+"GetPurchases <itemCode>" +"\n"+"ItemsAvailable <itemCode>" 
 				+"\n"+"UpdateItem <itemCode> <price>"+"\n"+"DeleteItem <itemCode>" +"\n"+"DeleteShipment <itemCode>"
-				+"\n"+"DeletePurchase <itemCode>");
+				+"\n"+"DeletePurchase <itemCode>"+"\nCreateItemFromProcedure <itemCode> <itemDescription> <price>");
 	}
 
 	// Main
