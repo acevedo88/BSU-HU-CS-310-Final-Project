@@ -315,7 +315,8 @@ public class Project {
 				String itemCodes = resultSet.getString(1);
 				String itemDescriptions = resultSet.getString(2);
 				int quantities = resultSet.getInt(3);
-				String output = String.format("%-15s %-35s %-12s", itemCodes, itemDescriptions, quantities);
+				String output = String.format("%-15s %-25s %-12s", itemCodes, itemDescriptions, quantities);
+				System.out.println(itemhead);
 				System.out.println(output);
 			}
 			
