@@ -128,7 +128,7 @@ public class Project {
 
 	}
 	
-	//Gets the Purchases
+	//Gets the Purchase based on ItemCode
 	public static List<Purchase> getPurchase(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -157,7 +157,7 @@ public class Project {
 
 	}
 	
-	//Gets the Shipments
+	//Gets the Shipments based on the ItemCode
 	public static List<Shipment> getShipment(String itemCode) throws SQLException {
 		Connection connection = null;
 
