@@ -1,6 +1,12 @@
 /*
  * @author Alex Acevedo
  * 
+ * CS310 Instructor Arthur Puthnam
+ * July 3 2019
+ * 
+ * CS310 Final project that uses methods to call SQL commands that will create
+ * a database along with 3 three tables that will store values inputed through
+ * command line.
  */
 
 import java.sql.*;
@@ -9,8 +15,10 @@ import java.util.ArrayList;
 
 public class Project {
 
-	//Create methods
-
+	//Methods uses to create the items, purchases, and shipments based on the specified user input.
+	//Opens sql connection and inserts values into a query code line which will execute and save results.
+	
+	//Creates Item
 	public static Item createItem(String itemCode, String itemDescription, double price) throws SQLException {
 		Connection connection = null;
 		Item item = new Item(itemCode, itemDescription, price);
@@ -28,6 +36,7 @@ public class Project {
 		return item;
 	}
 
+	//Creates  purchase
 	public static Purchase createPurchase(String itemCode, int quantity) throws SQLException {
 		
 		Connection connection = null;
@@ -46,6 +55,7 @@ public class Project {
 
 	}
 
+	//Creates Shipment
 	public static Shipment createShipment(String itemCode, int shipmentQuantity, String date) throws SQLException{
 		Connection connection = null;
 		Shipment shipment = new Shipment(itemCode, shipmentQuantity, date);
@@ -63,7 +73,7 @@ public class Project {
 	}
 
 
-	//Create using the stored procedure
+	//Create itmes using the stored procedure which will call a the procedure in the sql database
 
 	public static Item createItemUsingStoredProcedure(String itemCode, String itemDescription, double price)
 			throws SQLException {
@@ -73,7 +83,7 @@ public class Project {
 
 
 		connection = MySqlDatabase.getDatabaseConnection();
-		//        create procedure for here
+
 		String sql = String.format("CALL CreateNewItems('%s', '%s', '%s')", itemCode, itemDescription, price);
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -88,9 +98,10 @@ public class Project {
 	}
 
 
-	//Get methods
-
-
+	//Methods uses to get the items, purchases, and shipments based on the specified user input.
+	//Opens sql connection and inserts values into a query code line which will execute and save results.
+	
+	//Gets the Items
 	public static List<Item> getItems(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -116,6 +127,8 @@ public class Project {
 		return items;
 
 	}
+	
+	//Gets the Purchases
 	public static List<Purchase> getPurchase(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -143,6 +156,8 @@ public class Project {
 		return purchases;
 
 	}
+	
+	//Gets the Shipments
 	public static List<Shipment> getShipment(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -173,8 +188,10 @@ public class Project {
 	}
 
 
-	//Get all methods
+	//Methods uses to get all the items, purchases, and shipments based on the specified user input.
+	//Opens sql connection and inserts values into a query code line which will execute and save results.
 
+	//Gets all the Items
 	public static List<Item> getAllItems() throws SQLException {
 		Connection connection = null;
 
@@ -204,6 +221,7 @@ public class Project {
 
 	}
 
+	//Gets all the Purchases based on ItemCode
 	public static List<Purchase> getAllPurchases() throws SQLException{
 		Connection connection = null;
 
@@ -234,6 +252,7 @@ public class Project {
 		return purchases;
 	}
 
+	//Gets all the Shipments based on ItemCode
 	public static List<Shipment> getAllShipments() throws SQLException{
 		Connection connection = null;
 
@@ -263,8 +282,7 @@ public class Project {
 		return shipments;
 	}
 
-	//Update Item method
-
+	//Method used to Update an Item's Price based on the ItemCode
 	public static void updateItem(String itemCode, double price) throws SQLException {
 		Connection connection = null;
 
@@ -308,8 +326,9 @@ public class Project {
 	}
 	
 	
-	//Delete methods
-
+	//Methods used to Delete an Item, Purchase, or Shipment based on the ItemCode
+	
+	//Deletes an Item
 	public static void deleteItem(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -321,6 +340,7 @@ public class Project {
 		connection.close();
 	}
 
+	//Deletes a Purchase if it exists
 	public static void deletePurchase(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -351,6 +371,7 @@ public class Project {
 		connection.close();
 	}
 
+	//Deletes a Shipment is it exists
 	public static void deleteShipment(String itemCode) throws SQLException {
 		Connection connection = null;
 
@@ -380,8 +401,10 @@ public class Project {
 	}
 
 
-	//Attempts to create methods
+	//Methods used to Attempt to Create, Delete, Update, and Get Items.
+	//Will verify if operation work with a Try Catch block
 
+	//Attempts to Create new Item
 	public static void attemptToCreateNewItem(String itemCode, String itemDescription, double price) {
 		try {
 			Item item = createItem(itemCode, itemDescription, price);
@@ -393,6 +416,7 @@ public class Project {
 
 	}
 
+	//Attempts to Create new Purchase
 	public static void attemptToCreateNewPurchase(String itemCode, int quantity) {
 		try {
 			Purchase purchase = createPurchase(itemCode, quantity);
@@ -403,6 +427,8 @@ public class Project {
 		}
 
 	}
+	
+	//Attempts to Create new Shipment
 	public static void attemptToCreateNewShipment(String itemCode, int shipmentQuantity, String shipmentDate) {
 		try {
 			Shipment shipment = createShipment(itemCode, shipmentQuantity, shipmentDate);
@@ -413,6 +439,8 @@ public class Project {
 		}
 
 	}
+	
+	//Attempts to Get all Items
 	public static void attemptToGetAllItems() {
 		try {
 			List<Item> Newitems = getAllItems();
@@ -424,6 +452,8 @@ public class Project {
 			System.out.println(sqlException.getMessage());
 		}
 	}
+	
+	//Attempts to get an Item based on ItemCode
 	public static void attemptToGetItem(String itemCode) {
 		try {
 			List<Item> items = getItems(itemCode);
@@ -435,6 +465,8 @@ public class Project {
 			System.out.println(sqlException.getMessage());
 		}
 	}
+	
+	//Attempts to get all Purchases
 	public static void attemptToGetAllPurchases() {
 		try {
 			List<Purchase> purchases = getAllPurchases();
@@ -446,6 +478,8 @@ public class Project {
 			System.out.println(sqlException.getMessage());
 		}
 	}
+	
+	//Attempts to get a Purchase based on ItemCode
 	public static void attemptToGetPurchases(String itemCode) {
 		try {
 			List<Purchase> purchases = getPurchase(itemCode);
@@ -457,6 +491,8 @@ public class Project {
 			System.out.println(sqlException.getMessage());
 		}
 	}
+	
+	//Attempts to get all Shipments 
 	public static void attemptToGetAllShipments() {
 		try {
 			List<Shipment> shipments = getAllShipments();
@@ -468,6 +504,8 @@ public class Project {
 			System.out.println(sqlException.getMessage());
 		}
 	}
+	
+	//Attempts to get a Shipment based on ItemCode
 	public static void attemptToGetShipments(String itemCode) {
 		try {
 			List<Shipment> shipments = getShipment(itemCode);
@@ -479,6 +517,8 @@ public class Project {
 			System.out.println(sqlException.getMessage());
 		}
 	}
+	
+	//Attempts to Update an Item based on ItemCode
 	public static void attemptToUpdateItem(String itemCode, double price) {
         try {
             updateItem(itemCode, price);
@@ -488,6 +528,8 @@ public class Project {
         }
 
     }
+	
+	//Attempts to Delete an Item based on ItemCode
 	public static void attemptToDeleteItem(String itemCode) {
         try {
             deleteItem(itemCode);
@@ -497,6 +539,8 @@ public class Project {
         }
 
     }
+	
+	//Attempts to Delete a Purchase based on ItemCode
 	public static void attemptToDeletePurchase(String itemCode) {
         try {
             deletePurchase(itemCode);
@@ -506,6 +550,8 @@ public class Project {
         }
 
     }
+	
+	//Attempts to Delete a Shipment based on ItemCode
 	public static void attemptToDeleteShipment(String itemCode) {
         try {
             deleteShipment(itemCode);
@@ -515,6 +561,8 @@ public class Project {
         }
 
     }
+	
+	//Attempts to get Available Items based on ItemCode using a stored procedure
 	public static void attemptToGetAvailableItems(String itemCode) {
 		try {
             availableItems(itemCode);
@@ -523,6 +571,8 @@ public class Project {
             System.out.println(sqlException.getMessage());
         }
 	}
+	
+	//Attempts to get Create Items based on ItemCode, Description and price using a stored procedure
 	public static void attemptToCreateItemFromProcedure(String itemCode, String itemDescription, double price) {
 		try {
 			 createItemUsingStoredProcedure(itemCode, itemDescription, price);
@@ -545,7 +595,9 @@ public class Project {
 				+"\n"+"DeletePurchase <itemCode>"+"\nCreateItemFromProcedure <itemCode> <itemDescription> <price>");
 	}
 
-	// Main
+	
+	// Main Method that will use command line arguments to select which operations
+	// To implement correctly.  Will execute wrongFormat() method if inputed incorrectly.
 
 	public static void main(String[] args) throws SQLException{
 
