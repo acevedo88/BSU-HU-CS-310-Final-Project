@@ -128,6 +128,7 @@ public class Project {
 
 	}
 	
+
 	//Gets the Purchase based on ItemCode
 	public static List<Purchase> getPurchase(String itemCode) throws SQLException {
 		Connection connection = null;
