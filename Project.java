@@ -87,9 +87,9 @@ public class Project {
 		String sql = String.format("CALL CreateNewItems('%s', '%s', '%s')", itemCode, itemDescription, price);
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-		preparedStatement.setString(0, itemCode);
-		preparedStatement.setString(1, itemDescription);
-		preparedStatement.setDouble(2, price);
+		preparedStatement.setString(2, itemCode);
+		preparedStatement.setString(3, itemDescription);
+		preparedStatement.setDouble(3, price);
 
 		preparedStatement.execute();
 		connection.close();
