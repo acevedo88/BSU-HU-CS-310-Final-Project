@@ -557,7 +557,7 @@ public class Project {
 				+"\n"+"CreateShipment <itemCode> <ShipmentQuantity> <shipmentDate>" +"\n"+"GetItems <itemCode>"
 				+"\n"+"GetShipments <itemCode>" +"\n"+"GetPurchases <itemCode>" +"\n"+"ItemsAvailable <itemCode>" 
 				+"\n"+"UpdateItem <itemCode> <price>"+"\n"+"DeleteItem <itemCode>" +"\n"+"DeleteShipment <itemCode>"
-				+"\n"+"DeletePurchase <itemCode>"+"aj is a little bitch");
+				+"\n"+"DeletePurchase <itemCode>");
 	}
 
 	
